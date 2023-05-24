@@ -202,19 +202,7 @@
       </FIELDS>
     </TEMPLATES>
   </component>
-  <component name="MavenProjectsManager">
-    <option name="originalFiles">
-      <list>
-        <option value="$PROJECT_DIR$/pdf_generator/pom.xml" />
-        <option value="$PROJECT_DIR$/SpringBootApp/pom.xml" />
-        <option value="$PROJECT_DIR$/station_data_collector/pom.xml" />
-        <option value="$PROJECT_DIR$/data_collection_receiver/pom.xml" />
-        <option value="$PROJECT_DIR$/data_collection_dispatcher/pom.xml" />
-        <option value="$PROJECT_DIR$/station_javafx_app/pom.xml" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

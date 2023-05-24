@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class PdfHelper {
     public void generatePDF(Optional<Invoice> invoice, double pricePerKwh) {
-        if(invoice.isEmpty()){
+        if(invoice.isEmpty() || invoice.get().getCustomer().getId() == null){
             System.out.println("Invoice not found");
             return;
         }

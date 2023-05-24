@@ -45,6 +45,9 @@ public class DataCollectionController {
      */
     @PostMapping("/{customer-id}")
     public ResponseEntity<Void> startDataGathering(@PathVariable("customer-id") String customerId) {
+        if(!dataCollectionService.checkCustomerId(customerId)) {
+            return ResponseEntity.badRequest().build();
+        }
         dataCollectionService.publishDataGatheringJob(customerId);
         return ResponseEntity.accepted().build();
     }

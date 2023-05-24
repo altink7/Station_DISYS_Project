@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
@@ -54,7 +55,7 @@ public class PDFGenerator {
                     String receivedMessage = new String(delivery.getBody(), "UTF-8");
                     System.out.println("Received message:" + receivedMessage);
 
-                    pdfHelper.generatePDF(Optional.of(parseInvoiceData(receivedMessage)), pricePerKwh);
+                        pdfHelper.generatePDF(Optional.of(parseInvoiceData(receivedMessage)), pricePerKwh);
 
                 };
                 receiverPdfQueue.getChannel().basicConsume(receiverPdfQueue.getQueueName(), true, deliverCallback, consumerTag -> {

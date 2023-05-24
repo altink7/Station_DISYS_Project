@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="SpringBootApp" />
         <module name="station_data_collector" />
+        <module name="station_javafx_app" />
         <module name="pdf_generator" />
         <module name="data_collection_dispatcher" />
         <module name="data_collection_receiver" />

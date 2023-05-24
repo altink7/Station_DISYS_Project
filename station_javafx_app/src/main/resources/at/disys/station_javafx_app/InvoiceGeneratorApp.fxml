@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="at.disys.station_javafx_app.InvoiceGeneratorController">
+
+  <top>
+    <HBox alignment="CENTER" spacing="10">
+      <BorderPane.margin>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+      </BorderPane.margin>
+      <TextField fx:id="customerIdField" promptText="Customer ID" />
+      <Button text="Generate Invoice" onAction="#generateInvoice" />
+    </HBox>
+  </top>
+
+  <center>
+    <TableView fx:id="invoiceTable">
+      <columns>
+        <TableColumn text="Customer ID" prefWidth="100">
+          <cellValueFactory>
+            <PropertyValueFactory property="customerId" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn text="View Invoice" prefWidth="100">
+          <cellValueFactory>
+            <PropertyValueFactory property="viewInvoiceButton" />
+          </cellValueFactory>
+        </TableColumn>
+      </columns>
+    </TableView>
+  </center>
+
+</BorderPane>
+

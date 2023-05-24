@@ -20,6 +20,17 @@ import java.util.concurrent.TimeoutException;
 @Service
 public class DataCollectionService {
 
+
+    /**
+     * check if customerId is valid and exists in the database
+     */
+    public boolean checkCustomerId(String customerId) {
+        if (customerId == null || customerId.isEmpty() || !customerId.matches("[0-9]+")) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * this method starts the data gathering job
      * @param customerId customer id for the data gathering job
@@ -36,9 +47,9 @@ public class DataCollectionService {
     }
 
     /**
-     * gets pdf from pdf generator with name invoiceLuisa_Colon.pdf (example)
-     * @param customerId
-     * @return
+     * gets pdf from pdf generator
+     * @param customerId customer id for the data gathering job
+     * @return true if pdf exists and is downloaded, false if not
      */
     public boolean getInvoiceAndDownload(String customerId, HttpServletResponse response) {
         String fileName = "invoice" + customerId + ".pdf";
