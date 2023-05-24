@@ -1,5 +1,12 @@
 package at.disys.model;
 
+/**
+ * This class represents a station.
+ * <i> <br>
+ *    URLString VARCHAR(255) NOT NULL, <br>
+ *    total_kwh INTEGER NOT NULL <br>
+ *    </i>
+ */
 public class Station {
     public String URLString;
     public Long totalKwh;

@@ -7,8 +7,6 @@ package at.disys.model;
  *    first_name VARCHAR(255) NOT NULL, <br>
  *    last_name VARCHAR(255) NOT NULL</i>
  */
-
-
 public class Customer {
     private Long id;
 

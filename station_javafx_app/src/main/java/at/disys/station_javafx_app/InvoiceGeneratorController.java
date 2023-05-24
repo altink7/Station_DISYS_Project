@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Controller for the Invoice Generator JavaFX App.
+ */
 public class InvoiceGeneratorController {
     private static final String BASE_URL = "http://localhost:8080/api/invoices/";
     private final ObservableList<Invoice> invoices = FXCollections.observableArrayList();
@@ -38,6 +41,9 @@ public class InvoiceGeneratorController {
         invoiceTable.setItems(invoices);
     }
 
+    /**
+     * Generates an invoice for the customer ID entered in the text field.
+     */
     @FXML
     private void generateInvoice() {
         String customerId = customerIdField.getText();
@@ -48,24 +54,39 @@ public class InvoiceGeneratorController {
                 connection.setRequestMethod("POST");
                 connection.getResponseCode();
 
-                if (connection.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED && getResponseGETRequest(customerId).responseCode() == HttpURLConnection.HTTP_OK) {
-                    System.out.println("Invoice generated for customer ID: " + customerId);
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED) {
+                    //wait 10 seconds for the invoice to be generated
+                    Thread.sleep(5000);
+                    if(getResponseGETRequest(customerId).responseCode() == HttpURLConnection.HTTP_OK) {
+                        System.out.println("Invoice generated for customer ID: " + customerId);
+                    }
                     invoiceTable.getItems().add(new Invoice(customerId, createViewInvoiceButton(customerId)));
                 } else {
                     System.out.println("Invoice generation failed for customer ID: " + customerId);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
+    /**
+     * Creates a button that opens the invoice for the given customer ID.
+     * @param customerId The customer ID for which the invoice should be opened.
+     * @return The button that opens the invoice.
+     */
     private Button createViewInvoiceButton(String customerId) {
         Button viewInvoiceButton = new Button("View");
         viewInvoiceButton.setOnAction(e -> viewInvoice(customerId));
         return viewInvoiceButton;
     }
 
+    /**
+     * Opens the invoice for the given customer ID.
+     * @param customerId The customer ID for which the invoice should be opened.
+     */
     private static void viewInvoice(String customerId) {
         try {
             Result result = getResponseGETRequest(customerId);
@@ -96,6 +117,12 @@ public class InvoiceGeneratorController {
         }
     }
 
+    /**
+     * Sends a GET request to the server to check if an invoice is available for the given customer ID.
+     * @param customerId The customer ID for which the invoice should be checked.
+     * @return The response of the GET request.
+     * @throws IOException If an I/O error occurs.
+     */
     private static Result getResponseGETRequest(String customerId) throws IOException {
         URL url = new URL(BASE_URL + customerId);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -113,6 +140,9 @@ public class InvoiceGeneratorController {
         viewInvoice("123456");
     }
 
+    /**
+     * Represents an invoice.
+     */
     public static class Invoice {
         private final String customerId;
         private final Button viewInvoiceButton;

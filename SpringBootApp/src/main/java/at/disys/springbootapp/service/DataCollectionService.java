@@ -25,10 +25,7 @@ public class DataCollectionService {
      * check if customerId is valid and exists in the database
      */
     public boolean checkCustomerId(String customerId) {
-        if (customerId == null || customerId.isEmpty() || !customerId.matches("[0-9]+")) {
-            return false;
-        }
-        return true;
+        return customerId != null && !customerId.isEmpty() && customerId.matches("[0-9]+");
     }
 
     /**

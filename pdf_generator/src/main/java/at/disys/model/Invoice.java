@@ -5,6 +5,15 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class represents an invoice.
+ * <i> <br>
+ *     invoice_number SERIAL PRIMARY KEY, <br>
+ *     customer_id INTEGER REFERENCES customer(id), <br>
+ *     invoice_date DATE NOT NULL, <br>
+ *     total_kwh INTEGER NOT NULL <br>
+ * </i>
+ */
 public class Invoice {
     private Long invoiceNumber;
     private Customer customer;

@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * JavaFX App for generating invoices.
+ */
 public class InvoiceGeneratorApp extends Application {
 
     @Override

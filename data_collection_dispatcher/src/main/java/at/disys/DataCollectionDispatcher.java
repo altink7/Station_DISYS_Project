@@ -70,6 +70,13 @@ public class DataCollectionDispatcher {
         }
     }
 
+    /**
+     * Sends a message for every charging station to the Station Data Collector
+     * @param queueService send from this queue service
+     * @param customerId the customer id
+     * @throws IOException problem with sending the message
+     * @throws TimeoutException timeout while sending the message
+     */
     public void sendMessageForEachStation(QueueService queueService, long customerId) throws IOException, TimeoutException {
         DatabaseConnector stationDb = new DatabaseConnector();
         stationDb.connect();
