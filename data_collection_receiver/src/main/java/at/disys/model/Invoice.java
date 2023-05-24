@@ -61,7 +61,7 @@ public class Invoice {
         locations.forEach(station -> {
             stringBuilder.append(station.toCsv());
         });
-        stringBuilder.append(", ");
+        stringBuilder.append(",");
         stringBuilder.append(invoiceNumber);
         stringBuilder.append(",");
         stringBuilder.append(customerId);

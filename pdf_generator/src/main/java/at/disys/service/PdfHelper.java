@@ -7,8 +7,10 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 public class PdfHelper {
@@ -17,10 +19,13 @@ public class PdfHelper {
             System.out.println("Invoice not found");
             return;
         }
+        String fileName = "invoice" + invoice.get().getCustomer().getId()+ ".pdf";
+        String outputPath = Paths.get("files", fileName).toString();
+        File outputFile = new File(outputPath);
+
         Document document = new Document();
         try {
-            String outputPath = "invoice_"+invoice.get().getCustomer().getFirstName()+"_"+invoice.get().getCustomer().getLastName()+".pdf";
-            PdfWriter.getInstance(document, new FileOutputStream(outputPath));
+            PdfWriter.getInstance(document, new FileOutputStream(outputFile));
             document.open();
             addContent(document, invoice.get(), pricePerKwh);
             document.close();

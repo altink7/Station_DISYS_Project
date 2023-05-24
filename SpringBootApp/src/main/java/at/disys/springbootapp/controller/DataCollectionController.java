@@ -4,6 +4,7 @@ import at.disys.springbootapp.service.DataCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletResponse;
 
 /***
  * This class is responsible for the REST API. <br>
@@ -29,8 +30,12 @@ public class DataCollectionController {
      * @return invoice PDF with download link and creation time
      */
     @GetMapping("/{customer-id}")
-    public String getInvoice(@PathVariable("customer-id") String customerId) {
-        return customerId;
+    public ResponseEntity<Void> getInvoice(@PathVariable("customer-id") String customerId, HttpServletResponse response) {
+        if (dataCollectionService.getInvoiceAndDownload(customerId, response)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
