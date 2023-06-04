@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="station_application" type="CompoundRunConfigurationType">
+    <toRun name="DataCollectionDispatcher" type="Application" />
+    <toRun name="DataCollectionReceiver" type="Application" />
+    <toRun name="InvoiceGeneratorApp" type="Application" />
+    <toRun name="PDFGenerator" type="Application" />
+    <toRun name="StationDataCollector" type="Application" />
+    <toRun name="SpringBootAppApplication" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
