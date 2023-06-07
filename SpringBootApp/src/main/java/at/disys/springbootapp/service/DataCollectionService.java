@@ -19,8 +19,6 @@ import java.util.concurrent.TimeoutException;
 
 @Service
 public class DataCollectionService {
-
-
     /**
      * check if customerId is valid and exists in the database
      */
@@ -34,7 +32,6 @@ public class DataCollectionService {
      */
     public void publishDataGatheringJob(String customerId) {
         QueueService messagePublisher = new QueueService(QueueName.APP_DISPATCHER_QUEUE.getName());
-
         try {
             messagePublisher.connect();
             messagePublisher.sendMessage(customerId);

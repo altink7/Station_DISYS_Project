@@ -3,9 +3,8 @@ package at.disys.station_javafx_app;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -61,6 +60,13 @@ public class InvoiceGeneratorController {
                         System.out.println("Invoice generated for customer ID: " + customerId);
                     }
                     invoiceTable.getItems().add(new Invoice(customerId, createViewInvoiceButton(customerId)));
+                    if(viewInvoice(customerId, true, invoiceTable)){
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Information");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Invoice generated!");
+                        alert.showAndWait();
+                    }
                 } else {
                     System.out.println("Invoice generation failed for customer ID: " + customerId);
                 }
@@ -79,15 +85,18 @@ public class InvoiceGeneratorController {
      */
     private Button createViewInvoiceButton(String customerId) {
         Button viewInvoiceButton = new Button("View");
-        viewInvoiceButton.setOnAction(e -> viewInvoice(customerId));
+        viewInvoiceButton.setOnAction(e -> viewInvoice(customerId, false, invoiceTable));
         return viewInvoiceButton;
     }
 
     /**
      * Opens the invoice for the given customer ID.
-     * @param customerId The customer ID for which the invoice should be opened.
+     *
+     * @param customerId   The customer ID for which the invoice should be opened.
+     * @param invoiceTable invoice Table Data
      */
-    private static void viewInvoice(String customerId) {
+    private static boolean viewInvoice(String customerId, boolean isCheck, TableView<Invoice> invoiceTable) {
+        boolean success = true;
         try {
             Result result = getResponseGETRequest(customerId);
             if (result.responseCode() == HttpURLConnection.HTTP_OK) {
@@ -104,17 +113,28 @@ public class InvoiceGeneratorController {
                 }
 
                 File pdfFile = new File(localFilePath);
-                if (pdfFile.exists()) {
+                if (pdfFile.exists() && !isCheck ) {
                     Desktop.getDesktop().open(pdfFile);
                 } else {
                     System.out.println("Failed to open PDF file");
                 }
             } else if (result.responseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 System.out.println("Invoice not available for customer ID: " + customerId);
+
+                if(isCheck){ //check if exists
+                    invoiceTable.getItems().removeIf(invoice -> invoice.getCustomerId().equals(customerId));
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Invoice not found!");
+                    alert.showAndWait();
+                    success = false;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return success;
     }
 
     /**
@@ -134,12 +154,6 @@ public class InvoiceGeneratorController {
 
     private record Result(HttpURLConnection connection, int responseCode) {
     }
-
-
-    public static void main(String[] args) {
-        viewInvoice("123456");
-    }
-
     /**
      * Represents an invoice.
      */

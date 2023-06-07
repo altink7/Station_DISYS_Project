@@ -32,6 +32,8 @@ public class DataCollectionReceiver {
     boolean fromDispatcherReceived = false;
     boolean fromCollectorReceived = false;
 
+
+
     /**
      * Ends the data gathering job
      */
