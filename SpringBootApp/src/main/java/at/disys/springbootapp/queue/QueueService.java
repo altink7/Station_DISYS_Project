@@ -3,6 +3,8 @@ package at.disys.springbootapp.queue;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -11,6 +13,7 @@ import java.util.concurrent.TimeoutException;
  * This class is responsible for base implementation of a queue service
  */
 
+@Component
 public class QueueService {
     protected static final String RABBITMQ_HOST = "localhost";
     protected static final int RABBITMQ_PORT = 30003;
@@ -19,8 +22,8 @@ public class QueueService {
     protected Channel channel;
     protected String queueName;
 
-    public QueueService(String queueName) {
-        this.queueName = queueName;
+    public QueueService() {
+        this.queueName = QueueName.APP_DISPATCHER_QUEUE.getName();
 
         factory = new ConnectionFactory();
         factory.setPort(RABBITMQ_PORT);

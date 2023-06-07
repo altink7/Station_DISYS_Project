@@ -1,8 +1,9 @@
 package at.disys.springbootapp.service;
 
-import at.disys.springbootapp.queue.QueueName;
 import at.disys.springbootapp.queue.QueueService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +20,10 @@ import java.util.concurrent.TimeoutException;
 
 @Service
 public class DataCollectionService {
+    private QueueService messagePublisher;
+    private HttpServletRequest httpServletRequest;
+
+
     /**
      * check if customerId is valid and exists in the database
      */
@@ -31,7 +36,7 @@ public class DataCollectionService {
      * @param customerId customer id for the data gathering job
      */
     public void publishDataGatheringJob(String customerId) {
-        QueueService messagePublisher = new QueueService(QueueName.APP_DISPATCHER_QUEUE.getName());
+
         try {
             messagePublisher.connect();
             messagePublisher.sendMessage(customerId);
@@ -73,5 +78,10 @@ public class DataCollectionService {
         } else {
             return false;
         }
+    }
+
+    @Autowired
+    public void setMessagePublisher(QueueService messagePublisher) {
+        this.messagePublisher = messagePublisher;
     }
 }
