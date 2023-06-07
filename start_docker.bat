@@ -1,7 +1,7 @@
 @echo off
 
 echo Changing directory to Desktop/station_start...
-cd /d "C:\Users\kelme\Desktop\station_start"
+cd /d "station_start"
 
 echo.
 echo Running docker-compose up...
