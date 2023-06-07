@@ -95,7 +95,7 @@ public class DataCollectionDispatcher {
      * @throws TimeoutException timeout while sending the message
      */
     public void sendMessageForEachStation(QueueService queueService, long customerId) throws IOException, TimeoutException {
-        DatabaseConnector stationDb = new DatabaseConnector();
+        DatabaseConnector stationDb = databaseConnector;
         stationDb.connect();
 
         try (ResultSet resultSet = stationDb.executeSQLQuery(QUERY)) {

@@ -29,13 +29,19 @@ public class StationDataCollector {
 
     private final QueueService dispatcherCollectorQueue = new QueueService(DISPATCHER_COLLECTOR_QUEUE.getName());
     private final QueueService collectorReceiverQueue = new QueueService(COLLECTOR_RECEIVER_QUEUE.getName());
+    private final DatabaseConnector chargeDb;
+
+    public StationDataCollector(DatabaseConnector chargeDb) {
+        this.chargeDb = chargeDb;
+    }
 
     /**
      * station data collector main method
      */
 
+
     public static void main(String[] args) {
-        StationDataCollector stationDataCollector = new StationDataCollector();
+        StationDataCollector stationDataCollector = new StationDataCollector(new DatabaseConnector());
         stationDataCollector.gatherDataForSpecificPersonSpecificCharge();
     }
 
@@ -72,7 +78,6 @@ public class StationDataCollector {
     }
 
     public String getSpecificDataForSpecificUrl(String url, long customerId) {
-        DatabaseConnector chargeDb = new DatabaseConnector();
         chargeDb.connect(DatabaseConnector.getStationUrl(url));
         List<Charge> charges = new ArrayList<>();
         StringBuilder csv = new StringBuilder();
