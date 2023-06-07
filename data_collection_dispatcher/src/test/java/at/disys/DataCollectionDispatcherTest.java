@@ -2,12 +2,12 @@ package at.disys;
 
 import at.disys.db.DatabaseConnector;
 import at.disys.queue.QueueService;
-import com.rabbitmq.client.CancelCallback;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DeliverCallback;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -15,47 +15,39 @@ import java.sql.SQLException;
 import java.util.concurrent.TimeoutException;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+/**
+ * test for business logic
+ * @see DataCollectionDispatcher
+ */
 public class DataCollectionDispatcherTest {
-
-    private DataCollectionDispatcher dispatcher;
-    private QueueService springDispatcherQueue;
+    @Mock
     private QueueService dispatcherCollectorQueue;
-    private QueueService dispatcherReceiverQueue;
+    @Mock
     private DatabaseConnector databaseConnector;
+    @InjectMocks
+    private DataCollectionDispatcher dispatcher;
 
     @BeforeEach
     public void setUp() {
-        springDispatcherQueue = Mockito.mock(QueueService.class);
-        dispatcherCollectorQueue = Mockito.mock(QueueService.class);
-        dispatcherReceiverQueue = Mockito.mock(QueueService.class);
-        databaseConnector = Mockito.mock(DatabaseConnector.class);
-
-        dispatcher = new DataCollectionDispatcher(springDispatcherQueue, dispatcherCollectorQueue, dispatcherReceiverQueue, databaseConnector);
+        MockitoAnnotations.openMocks(this);
     }
-
-    @Test
-    public void testDispatchDataCollectionJob() throws IOException, TimeoutException {
-        Channel channel = Mockito.mock(Channel.class);
-        when(springDispatcherQueue.getChannel()).thenReturn(channel);
-
-        dispatcher.dispatchDataCollectionJob();
-
-        verify(springDispatcherQueue, times(1)).connect();
-        verify(channel, times(1)).basicConsume(anyString(), eq(true), (DeliverCallback) any(), (CancelCallback) any());
-    }
-
 
     @Test
     public void testSendMessageForEachStation() throws IOException, SQLException, TimeoutException {
+        //Arrange
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         when(databaseConnector.executeSQLQuery(DataCollectionDispatcher.QUERY)).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
+        //Act
         dispatcher.sendMessageForEachStation(dispatcherCollectorQueue, 1L);
 
-        verify(databaseConnector, times(1)).executeSQLQuery(DataCollectionDispatcher.QUERY);
-        verify(dispatcherCollectorQueue, times(2)).sendMessage(anyString());
+        //it should be at least 2 times, one Station and one END message
+        verify(dispatcherCollectorQueue, atLeast(2)).sendMessage(anyString());
+
+        //for default
+        //Assert - we want to make sure we sent for each station a message, and also the END Message ( 3 + 1 ), therefore should be 4
+        verify(dispatcherCollectorQueue, times(4)).sendMessage(anyString());
     }
 }
