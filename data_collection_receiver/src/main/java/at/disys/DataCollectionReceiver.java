@@ -34,6 +34,8 @@ public class DataCollectionReceiver {
 
 
 
+
+
     /**
      * Ends the data gathering job
      */
@@ -61,15 +63,7 @@ public class DataCollectionReceiver {
                         processDispatcher(receivedMessage, delivery.getEnvelope().getRoutingKey().equals(DISPATCHER_RECEIVER_QUEUE.getName()));
                         processCollector(receivedMessage, delivery.getEnvelope().getRoutingKey().equals(COLLECTOR_RECEIVER_QUEUE.getName()));
 
-                        //if both messages are received, the data gathering process ends and then send gathered data to pdf generator
-                        if(fromDispatcherReceived && fromCollectorReceived) {
-                            invoice.setTotalKwh(invoice.getLocations().stream().mapToLong(Station::getTotalKwh).sum());
-                            receiverPdfQueue.sendMessage(invoice.toCsv().toString());
-                            //reset variables
-                            invoice = new Invoice();
-                            fromDispatcherReceived = false;
-                            fromCollectorReceived = false;
-                        }
+                        processJob();
                     } catch (TimeoutException e) {
                         throw new RuntimeException(e);
                     }
@@ -83,11 +77,25 @@ public class DataCollectionReceiver {
     }
 
     /**
+     * if both messages are received, the data gathering process ends and then send gathered data to pdf generator
+     */
+    protected void processJob() throws IOException {
+        if(fromDispatcherReceived && fromCollectorReceived) {
+            invoice.setTotalKwh(invoice.getLocations().stream().mapToLong(Station::getTotalKwh).sum());
+            receiverPdfQueue.sendMessage(invoice.toCsv().toString());
+            //reset variables
+            invoice = new Invoice();
+            fromDispatcherReceived = false;
+            fromCollectorReceived = false;
+        }
+    }
+
+    /**
      * Processes the message received from the dispatcher
      * @param receivedMessage the message received from the dispatcher
      * @param isDispatcher true if the message is from the dispatcher, false otherwise
      */
-    private void processDispatcher(String receivedMessage, boolean isDispatcher) {
+    protected void processDispatcher(String receivedMessage, boolean isDispatcher) {
         if (isDispatcher) {
             invoice.setInvoiceNumber(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
             invoice.setCustomerId(Long.parseLong(receivedMessage));
@@ -101,7 +109,7 @@ public class DataCollectionReceiver {
      * @param receivedMessage the message received from the collector
      * @param isCollector true if the message is from the collector, false otherwise
      */
-    private void processCollector(String receivedMessage, boolean isCollector) {
+    protected void processCollector(String receivedMessage, boolean isCollector) {
         if(isCollector) {
             //if message is END, then send to pdf generator
             if (receivedMessage.equals("END")) {

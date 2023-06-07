@@ -56,6 +56,7 @@ public class QueueService {
         System.out.println("Sent message: " + message);
     }
 
+
     public Channel getChannel() {
         return channel;
     }
@@ -63,4 +64,5 @@ public class QueueService {
     public String getQueueName() {
         return queueName;
     }
+
 }
