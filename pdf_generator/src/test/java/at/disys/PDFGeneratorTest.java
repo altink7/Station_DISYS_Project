@@ -3,17 +3,14 @@ package at.disys;
 import at.disys.db.DatabaseConnector;
 import at.disys.model.Customer;
 import at.disys.model.Invoice;
-import at.disys.queue.QueueService;
-import at.disys.service.PdfHelper;
 import com.rabbitmq.client.*;
-import com.rabbitmq.client.Connection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-
-import java.io.IOException;
-import java.sql.*;
-import java.util.concurrent.TimeoutException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -21,19 +18,6 @@ import static org.mockito.Mockito.*;
 public class PDFGeneratorTest {
     @InjectMocks
     private PDFGenerator pdfGenerator;
-
-    @Mock
-    private QueueService receiverPdfQueue;
-
-    @Mock
-    private DatabaseConnector databaseConnector;
-
-    @Mock
-    private PdfHelper pdfHelper;
-
-    @Mock
-    private ConnectionFactory connectionFactory;
-
     @Mock
     private Connection connection;
 
@@ -46,8 +30,8 @@ public class PDFGeneratorTest {
     @Mock
     private ResultSet resultSet;
 
-    @Captor
-    private ArgumentCaptor<DeliverCallback> deliverCallbackCaptor;
+    @Mock
+    private DatabaseConnector databaseConnector;
 
     @BeforeEach
     public void setup() {
@@ -55,31 +39,44 @@ public class PDFGeneratorTest {
     }
 
     @Test
-    public void testHandleAllGatheredData() throws IOException, TimeoutException {
-        when(receiverPdfQueue.getChannel()).thenReturn(channel);
-        when(receiverPdfQueue.getQueueName()).thenReturn("queue");
-
-        pdfGenerator.handleAllGatheredData();
-
-        verify(channel, times(1)).basicConsume(eq("queue"), eq(true), any(DeliverCallback.class), any(CancelCallback.class));
-
+    public void testParseInvoiceData() throws SQLException {
+        // Arrange
+        when(databaseConnector.executeSQLQuery(PDFGenerator.QUERY)).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(databaseConnector.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.getLong("id")).thenReturn(1L);
+        when(resultSet.getString("first_name")).thenReturn("Test");
+        when(resultSet.getString("last_name")).thenReturn("Test");
+        String invoiceData = "localhost:30013;164|localhost:30011;69|localhost:30012;179|,728333919433148334,1,2023-06-07,412";
+        // Act
+        Invoice invoice = pdfGenerator.parseInvoiceData(invoiceData);
+        // Assert
+        assertEquals(728333919433148334L, invoice.getInvoiceNumber());
+        assertEquals(1L, invoice.getCustomer().getId());
+        assertEquals("2023-06-07", invoice.getInvoiceDate().toString());
+        assertEquals(412L, invoice.getTotalKwh());
     }
 
     @Test
     public void testGetCustomerById() throws SQLException {
-        long id = 1L;
-        when(databaseConnector.getConnection()).thenReturn((java.sql.Connection) connection);
-        when(((java.sql.Connection) connection).prepareStatement(any())).thenReturn(preparedStatement);
+        // Arrange
+        when(databaseConnector.executeSQLQuery(PDFGenerator.QUERY)).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(databaseConnector.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true);
-        when(resultSet.getLong(any())).thenReturn(id);
-        when(resultSet.getString(any())).thenReturn("Test");
+        when(resultSet.getLong("id")).thenReturn(1L);
+        when(resultSet.getString("first_name")).thenReturn("Test");
+        when(resultSet.getString("last_name")).thenReturn("Test");
 
-        Customer customer = pdfGenerator.getCustomerById(id);
-
+        // Act
+        Customer customer = pdfGenerator.getCustomerById(1L);
+        // Assert
         verify(databaseConnector, times(1)).connect();
         verify(databaseConnector, times(1)).disconnect();
-        assertEquals(id, customer.getId());
+        assertEquals(1L, customer.getId());
         assertEquals("Test", customer.getFirstName());
         assertEquals("Test", customer.getLastName());
     }

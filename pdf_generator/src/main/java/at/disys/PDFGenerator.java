@@ -6,17 +6,13 @@ import at.disys.model.Invoice;
 import at.disys.model.Station;
 import at.disys.queue.QueueService;
 import at.disys.service.PdfHelper;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.rabbitmq.client.DeliverCallback;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
@@ -36,11 +32,17 @@ public class PDFGenerator {
     private PdfHelper pdfHelper = new PdfHelper();
     private final double pricePerKwh = 0.25;
 
+    private final DatabaseConnector customerDb;
+
+    public PDFGenerator(DatabaseConnector customerDb) {
+        this.customerDb = customerDb;
+    }
+
     /**
      * PDF generator main method
      */
     public static void main(String[] args){
-        PDFGenerator pdfGenerator = new PDFGenerator();
+        PDFGenerator pdfGenerator = new PDFGenerator(new DatabaseConnector());
         pdfGenerator.handleAllGatheredData();
     }
 
@@ -71,7 +73,7 @@ public class PDFGenerator {
      * @param receivedMessage String to parse
      * @return Invoice object
      */
-    private Invoice parseInvoiceData(String receivedMessage) {
+    protected Invoice parseInvoiceData(String receivedMessage) {
         Invoice invoice = new Invoice();
 
         String[] invoiceData = receivedMessage.split(",");
@@ -100,7 +102,6 @@ public class PDFGenerator {
      * @return Customer object
      */
     public Customer getCustomerById(Long id) {
-        DatabaseConnector customerDb = new DatabaseConnector();
         customerDb.connect();
 
         try (PreparedStatement statement = customerDb.getConnection().prepareStatement(QUERY)) {
