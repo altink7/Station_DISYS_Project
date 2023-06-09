@@ -22,7 +22,11 @@ A graph of the system:
 
 ## The Components
 
-### 
+### PDF Generator
+
+The PDF Generator is a JavaFX Application wher the customer can enter the customer_id. Afterwards a list with all corresponding invoices is displayed. The customer can select the invoice which should be generated as PDF.
+
+
 
 ## User Guide
 
