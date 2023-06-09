@@ -44,6 +44,10 @@ The Station Data Collecotr gathers data for a specific customer from a specific 
 
 The Data Collection Receiver receives all collected data, sorts the data to the according gathering job and sends data to the PDF Generator when the data is complete. The class Data Collection Receiver is responsible for receiving the data collection from the data collector. Furthermore it contains the model classes invoice and station as well as the Name and the Service Queue.
 
+### PDF Generator
+
+The PDF Generator generates the invoice from data and saves PDF to the file system. The service class PDF Helper is responsible for generating PDF files. It uses the iText library. The component also contains the class Database Connector which is responsible for the connection to the database POSTGRES as well as the model classes Customer, Invoice and Station. In addition the Name and the Service Queue are part of the component.
+
 ## User Guide
 
 This guide will help you set up and run the project using IntelliJ and Docker.
