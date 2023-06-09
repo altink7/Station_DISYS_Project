@@ -22,11 +22,19 @@ A graph of the system:
 
 ## The Components
 
-### PDF Generator
+### Station JavaFX Application
 
 The PDF Generator is a JavaFX Application wher the customer can enter the customer_id. Afterwards a list with all corresponding invoices is displayed. The customer can select the invoice which should be generated as PDF.
 
+![image](https://github.com/altink7/Station_DISYS_Project/assets/84073745/687bb4d8-d5bb-4a5a-8536-792ec13068cd)
 
+### Spring Boot Application
+
+The Spring Boot Application starts the process by sending a start message to the Data Collection Dispatcher. It contains the Data Collection Controller which is responsible for the REST API and starts the data gathering job as well as returns the invoice PDF. The Data Collection Service within this component contains the business logic for the data collection Spring Boot Application. Further more the Name and the Service Queue are part of the Spring Boot Application.
+
+### Data Collection Dispatcher
+
+The Data Collection Dispatcher starts the data gahtering job, has knowledge about the available stations, sends a message for every charging station to the Station Data Collector and sends a message to the Data Collection Receiver, that a new job started. It is responsible for dispatching the data collection to the correct data collector. Furthermor it includes the class Database Connector which is responsible for the connection to the database POSTGRES and the Station Class which represents a station central database. In addition the Name and the Service Queue are included.
 
 ## User Guide
 
