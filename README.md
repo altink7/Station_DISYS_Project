@@ -36,6 +36,14 @@ The Spring Boot Application starts the process by sending a start message to the
 
 The Data Collection Dispatcher starts the data gahtering job, has knowledge about the available stations, sends a message for every charging station to the Station Data Collector and sends a message to the Data Collection Receiver, that a new job started. It is responsible for dispatching the data collection to the correct data collector. Furthermor it includes the class Database Connector which is responsible for the connection to the database POSTGRES and the Station Class which represents a station central database. In addition the Name and the Service Queue are included.
 
+### Station Data Collector
+
+The Station Data Collecotr gathers data for a specific customer from a specific charging station and sends data to the Data Collection Reciever. It includes the class Database Connector which is responsible for the connection to the database POSTGRES. It also contains the Charge class which represents a charge of a cutsomer and again the Name and the Service Queue.
+
+### Data Collection Receiver
+
+The Data Collection Receiver receives all collected data, sorts the data to the according gathering job and sends data to the PDF Generator when the data is complete. The class Data Collection Receiver is responsible for receiving the data collection from the data collector. Furthermore it contains the model classes invoice and station as well as the Name and the Service Queue.
+
 ## User Guide
 
 This guide will help you set up and run the project using IntelliJ and Docker.
