@@ -1,3 +1,29 @@
+# Data Station Collector
+
+## About The Project
+
+The Data Station Collector is a project where a distributed system with a REST-based API, a RabbitMQ message queue and a JavaFX UI was implemented.
+
+The workflow:
+* Customer can input a customer id into the UI and click “Generate Invoice”
+* A HTTP Request calls the REST-based API
+* The application starts a new data gathering job
+* When the data is gathered, it gets send to the PDF generator
+* The PDF generator generates the invoice and saves it on the file system
+* The UI checks every couple seconds if the invoice is available
+
+It is a docker-compose project that sets up five databases and a queue. One database stores user information, one database stores the access information of the other three databases, which itself store the charging information (every charging station has its own database). 
+
+### The System Overview
+
+A graph of the system:
+
+![image](https://github.com/altink7/Station_DISYS_Project/assets/84073745/990028b7-0399-4cd3-a27e-a200808423de)
+
+## The Components
+
+### 
+
 ## User Guide
 
 This guide will help you set up and run the project using IntelliJ and Docker.
