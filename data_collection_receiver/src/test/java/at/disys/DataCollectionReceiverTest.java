@@ -1,35 +1,22 @@
 package at.disys;
 
-import at.disys.model.Invoice;
-import at.disys.model.Station;
-import at.disys.queue.QueueName;
-import at.disys.queue.QueueService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class DataCollectionReceiverTest {
-    private QueueService receiverPDFQueue;
-    Invoice invoice;
     DataCollectionReceiver dataCollectionReceiver;
 
     @BeforeEach
     void setUp() {
         // Arrange
         dataCollectionReceiver = new DataCollectionReceiver();
-        receiverPDFQueue = new QueueService(QueueName.RECEIVER_PDF_QUEUE.getName());
     }
 
     @Test
@@ -53,7 +40,6 @@ class DataCollectionReceiverTest {
         assertEquals(LocalDate.now(), dataCollectionReceiver.invoice.getInvoiceDate());
 
     }
-
 
     @Test
     void testProcessCollector() {

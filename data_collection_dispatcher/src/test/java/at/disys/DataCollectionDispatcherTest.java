@@ -17,10 +17,6 @@ import java.util.concurrent.TimeoutException;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-/**
- *
- */
-
 public class DataCollectionDispatcherTest {
     @Mock
     private QueueService dispatcherCollectorQueue;
@@ -40,10 +36,8 @@ public class DataCollectionDispatcherTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         when(databaseConnector.executeSQLQuery(DataCollectionDispatcher.QUERY)).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
-
         // Act
         dispatcher.sendMessageForEachStation(dispatcherCollectorQueue, 1L);
-
         // Assert - we want to execute the query once
         verify(databaseConnector, times(1)).executeSQLQuery(DataCollectionDispatcher.QUERY);
         //one call for stations and one call for END message

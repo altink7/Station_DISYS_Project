@@ -3,10 +3,12 @@ package at.disys;
 import at.disys.db.DatabaseConnector;
 import at.disys.model.Customer;
 import at.disys.model.Invoice;
-import com.rabbitmq.client.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,19 +22,12 @@ public class PDFGeneratorTest {
     private PDFGenerator pdfGenerator;
     @Mock
     private Connection connection;
-
-    @Mock
-    private Channel channel;
-
     @Mock
     private PreparedStatement preparedStatement;
-
     @Mock
     private ResultSet resultSet;
-
     @Mock
     private DatabaseConnector databaseConnector;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);

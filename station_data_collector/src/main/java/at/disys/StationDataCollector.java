@@ -38,8 +38,6 @@ public class StationDataCollector {
     /**
      * station data collector main method
      */
-
-
     public static void main(String[] args) {
         StationDataCollector stationDataCollector = new StationDataCollector(new DatabaseConnector());
         stationDataCollector.gatherDataForSpecificPersonSpecificCharge();
