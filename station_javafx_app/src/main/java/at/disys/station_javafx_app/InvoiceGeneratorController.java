@@ -23,10 +23,10 @@ public class InvoiceGeneratorController {
     private final ObservableList<Invoice> invoices = FXCollections.observableArrayList();
 
     @FXML
-    private TextField customerIdField;
+    protected TextField customerIdField;
 
     @FXML
-    private TableView<Invoice> invoiceTable;
+    protected TableView<Invoice> invoiceTable;
 
     public void initialize() {
         invoiceTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
