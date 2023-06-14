@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
@@ -22,6 +21,8 @@ public class DataCollectionDispatcherTest {
     private QueueService dispatcherCollectorQueue;
     @Mock
     private DatabaseConnector databaseConnector;
+    @Mock
+    ResultSet resultSet;
     @InjectMocks
     private DataCollectionDispatcher dispatcher;
 
@@ -33,13 +34,12 @@ public class DataCollectionDispatcherTest {
     @Test
     public void testSendMessageForEachStation() throws IOException, SQLException, TimeoutException {
         // Arrange
-        ResultSet resultSet = Mockito.mock(ResultSet.class);
-        when(databaseConnector.executeSQLQuery(DataCollectionDispatcher.QUERY)).thenReturn(resultSet);
+        when(databaseConnector.executeSQLQuery(anyString())).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         // Act
         dispatcher.sendMessageForEachStation(dispatcherCollectorQueue, 1L);
         // Assert - we want to execute the query once
-        verify(databaseConnector, times(1)).executeSQLQuery(DataCollectionDispatcher.QUERY);
+        verify(databaseConnector, times(1)).executeSQLQuery(anyString());
         //one call for stations and one call for END message
         verify(dispatcherCollectorQueue, times(2)).sendMessage(anyString());
         //one time we should definitively END message

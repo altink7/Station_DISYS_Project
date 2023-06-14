@@ -1,5 +1,7 @@
 package at.disys.station_javafx_app;
 
+import at.disys.station_javafx_app.model.Invoice;
+import at.disys.station_javafx_app.service.InvoiceGeneratorService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,12 +10,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.xml.transform.Result;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static at.disys.station_javafx_app.service.InvoiceGeneratorService.getResponseGETRequest;
 
 /**
  * Controller for the Invoice Generator JavaFX App.
@@ -23,10 +28,10 @@ public class InvoiceGeneratorController {
     private final ObservableList<Invoice> invoices = FXCollections.observableArrayList();
 
     @FXML
-    protected TextField customerIdField;
+    private TextField customerIdField;
 
     @FXML
-    protected TableView<Invoice> invoiceTable;
+    private  TableView<Invoice> invoiceTable;
 
     public void initialize() {
         invoiceTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -44,7 +49,7 @@ public class InvoiceGeneratorController {
      * Generates an invoice for the customer ID entered in the text field.
      */
     @FXML
-    private void generateInvoice() {
+    protected void generateInvoice() {
         String customerId = customerIdField.getText();
         if (!customerId.isEmpty()) {
             try {
@@ -98,7 +103,7 @@ public class InvoiceGeneratorController {
     private static boolean viewInvoice(String customerId, boolean isCheck, TableView<Invoice> invoiceTable) {
         boolean success = true;
         try {
-            Result result = getResponseGETRequest(customerId);
+            InvoiceGeneratorService.Result result = getResponseGETRequest(customerId);
             if (result.responseCode() == HttpURLConnection.HTTP_OK) {
                 System.out.println("Invoice available for customer ID: " + customerId);
 
@@ -115,8 +120,6 @@ public class InvoiceGeneratorController {
                 File pdfFile = new File(localFilePath);
                 if (pdfFile.exists() && !isCheck ) {
                     Desktop.getDesktop().open(pdfFile);
-                } else {
-                    System.out.println("Failed to open PDF file");
                 }
             } else if (result.responseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 System.out.println("Invoice not available for customer ID: " + customerId);
@@ -135,40 +138,5 @@ public class InvoiceGeneratorController {
             e.printStackTrace();
         }
         return success;
-    }
-
-    /**
-     * Sends a GET request to the server to check if an invoice is available for the given customer ID.
-     * @param customerId The customer ID for which the invoice should be checked.
-     * @return The response of the GET request.
-     * @throws IOException If an I/O error occurs.
-     */
-    private static Result getResponseGETRequest(String customerId) throws IOException {
-        URL url = new URL(BASE_URL + customerId);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-
-        int responseCode = connection.getResponseCode();
-        return new Result(connection, responseCode);
-    }
-
-    private record Result(HttpURLConnection connection, int responseCode) {
-    }
-    /**
-     * Represents an invoice.
-     */
-    public static class Invoice {
-        private final String customerId;
-        private final Button viewInvoiceButton;
-        public Invoice(String customerId, Button viewInvoiceButton) {
-            this.customerId = customerId;
-            this.viewInvoiceButton = viewInvoiceButton;
-        }
-        public String getCustomerId() {
-            return customerId;
-        }
-        public Button getViewInvoiceButton() {
-            return viewInvoiceButton;
-        }
     }
 }
