@@ -26,7 +26,7 @@ A graph of the system:
 
 The PDF Generator is a JavaFX Application wher the customer can enter the customer_id. Afterwards a list with all corresponding invoices is displayed. The customer can select the invoice which should be generated as PDF.
 
-![image](https://github.com/altink7/Station_DISYS_Project/assets/84073745/687bb4d8-d5bb-4a5a-8536-792ec13068cd)
+![image](https://github.com/altink7/Station_DISYS_Project/assets/84073745/9ef99749-3732-4c94-939e-9aed938a2ecb)
 
 ### Spring Boot Application
 
