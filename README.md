@@ -128,6 +128,6 @@ The distributed system was coded by the following developers:
 - Sandra GRADWOHL-PREM (WI20B063)
 - Sara SEIEDMIRZAEI (WI21B040)
 
-### Data of creation
+### Date of creation
 
 The project was completed in June 2023.
