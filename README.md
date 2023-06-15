@@ -101,9 +101,26 @@ Please note that this guide assumes basic familiarity with IntelliJ IDEA and Doc
 
 For more information and the latest updates, visit the [GitHub repository](https://github.com/altink7/Station_DISYS_Project.git).
 
+
+## Lessons Learned
+
+- Active participation during teaching events and completing the exercises helps to understand the basic concept of distributed systems, but is not enough for successfully creating the project.
+- A project as complex and big as this one takes always longer than estimated. Despite time buffers it took longer as estimated. Starting very early helped us to keep the deadline and not having an extremly busy time in the last view days.
+- Considering the Project Grading Scheme from the very beginning helps to focus on most relevant tasks and to not forget any requirement.
+- Cloud-based repositories are cruciual for successful team work. In additon communication tools like Discord are essential.
+- Creating a basic coding concept and structure bevor starting to code in detail helps to reduce complexity and to ensure consistency. Afterwards it helps to split the tasks.
+- For a group of not experienced programmers or even programming beginners the project would be hardly feasible.
+- The support / help and explanations from experienced team members are by far more helpful than any online resource.
+
+
+## Effort
+
+The time needed was not tracked, but we would estimate it took us approximately 20 hours per person, so about 80 hours in total.
+
+
 ## Credits
 
-### Devloper
+### Developer
 
 The distributed system was coded by the following developers:
 - Altin KELMENDI (WI21B054)
