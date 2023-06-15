@@ -48,6 +48,14 @@ The Data Collection Receiver receives all collected data, sorts the data to the 
 
 The PDF Generator generates the invoice from data and saves PDF to the file system. The service class PDF Helper is responsible for generating PDF files. It uses the iText library. The component also contains the class Database Connector which is responsible for the connection to the database POSTGRES as well as the model classes Customer, Invoice and Station. In addition the Name and the Service Queue are part of the component.
 
+## Entity Relationship Diagram
+
+The following entity relationship diagram shows the tables of the database and how they are related:
+
+![image](https://github.com/altink7/Station_DISYS_Project/assets/84073745/6b2cdaf6-f04d-4fc7-a0d0-d316b115f325)
+
+The table customer contains all relevant customer data and is connected to the charge table via customer_id. The charge table contains the data about kwh and an id for tracking the record. The station table contains the data about the station and is connected to the charge table via station_id. The station table definition is the same for all station databases.
+
 ## User Guide
 
 This guide will help you set up and run the project using IntelliJ and Docker.
