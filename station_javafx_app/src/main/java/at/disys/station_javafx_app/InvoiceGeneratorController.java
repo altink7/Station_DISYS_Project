@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.xml.transform.Result;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,7 +48,7 @@ public class InvoiceGeneratorController {
      * Generates an invoice for the customer ID entered in the text field.
      */
     @FXML
-    protected void generateInvoice() {
+    protected void onClickGenerateInvoice() {
         String customerId = customerIdField.getText();
         if (!customerId.isEmpty()) {
             try {
@@ -109,11 +108,11 @@ public class InvoiceGeneratorController {
 
                 String localFilePath = "files/invoice" + customerId + ".pdf";
 
-                try (FileOutputStream fos = new FileOutputStream(localFilePath)) {
+                try (FileOutputStream fileOutputStream = new FileOutputStream(localFilePath)) {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
                     while ((bytesRead = result.connection().getInputStream().read(buffer)) != -1) {
-                        fos.write(buffer, 0, bytesRead);
+                        fileOutputStream.write(buffer, 0, bytesRead);
                     }
                 }
 
