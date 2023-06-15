@@ -105,7 +105,7 @@ For more information and the latest updates, visit the [GitHub repository](https
 
 ### Devloper
 
-The distributed system was code from the following developers:
+The distributed system was coded by the following developers:
 - Altin KELMENDI (WI21B054)
 - Julian HOFFMANN (WI21B050)
 - Sandra GRADWOHL-PREM (WI20B063)
