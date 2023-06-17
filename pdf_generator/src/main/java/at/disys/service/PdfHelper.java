@@ -19,6 +19,18 @@ import java.util.Optional;
  * @author Altin
  */
 public class PdfHelper {
+    private static PdfHelper instance;
+
+    private PdfHelper() {
+    }
+
+    /** Singleton METHOD */
+    public static PdfHelper getInstance() {
+        if (instance == null) {
+            instance = new PdfHelper();
+        }
+        return instance;
+    }
 
     /**
      * Generates a PDF file for the given invoice.

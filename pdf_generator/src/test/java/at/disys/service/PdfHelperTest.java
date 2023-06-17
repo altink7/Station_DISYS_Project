@@ -22,7 +22,7 @@ class PdfHelperTest {
 
     @BeforeEach
     public void setup() {
-        pdfHelper = new PdfHelper();
+        pdfHelper = PdfHelper.getInstance();
 
         invoice = new Invoice();
         Customer customer = new Customer();

@@ -26,33 +26,37 @@ import static at.disys.queue.QueueName.*;
  */
 
 public class DataCollectionDispatcher {
+    private static DataCollectionDispatcher instance;
     public static final String QUERY = "SELECT * FROM station";
-
     private final QueueService springDispatcherQueue;
     private final QueueService dispatcherCollectorQueue;
     private final QueueService dispatcherReceiverQueue;
     private final DatabaseConnector databaseConnector;
 
-    public DataCollectionDispatcher(QueueService springDispatcherQueue,
-                                    QueueService dispatcherCollectorQueue,
-                                    QueueService dispatcherReceiverQueue,
-                                    DatabaseConnector databaseConnector) {
+    private DataCollectionDispatcher(QueueService springDispatcherQueue, QueueService dispatcherCollectorQueue, QueueService dispatcherReceiverQueue, DatabaseConnector databaseConnector) {
         this.springDispatcherQueue = springDispatcherQueue;
         this.dispatcherCollectorQueue = dispatcherCollectorQueue;
         this.dispatcherReceiverQueue = dispatcherReceiverQueue;
         this.databaseConnector = databaseConnector;
     }
+
+    public static DataCollectionDispatcher getInstance() {
+        if (instance == null) {
+            instance = new DataCollectionDispatcher(
+                    new QueueService(APP_DISPATCHER_QUEUE.getName()),
+                    new QueueService(DISPATCHER_COLLECTOR_QUEUE.getName()),
+                    new QueueService(DISPATCHER_RECEIVER_QUEUE.getName()),
+                    new DatabaseConnector()
+            );
+        }
+        return instance;
+    }
+
     /**
      * Starts the data gathering job
      */
     public static void main(String[] args) {
-        // Ensure proper instantiation with real objects in the main method
-        DataCollectionDispatcher dataCollectionDispatcher = new DataCollectionDispatcher(
-                new QueueService(APP_DISPATCHER_QUEUE.getName()),
-                new QueueService(DISPATCHER_COLLECTOR_QUEUE.getName()),
-                new QueueService(DISPATCHER_RECEIVER_QUEUE.getName()),
-                new DatabaseConnector()
-        );
+        DataCollectionDispatcher dataCollectionDispatcher = getInstance();
 
         dataCollectionDispatcher.dispatchDataCollectionJob();
     }

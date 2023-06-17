@@ -16,17 +16,17 @@ class DataCollectionReceiverTest {
     @BeforeEach
     void setUp() {
         // Arrange
-        dataCollectionReceiver = new DataCollectionReceiver();
+        dataCollectionReceiver = DataCollectionReceiver.getInstance();
     }
 
     @Test
-    void testProcessJob() throws IOException, TimeoutException {
+    void testProcessJob() throws IOException {
         // Act
         dataCollectionReceiver.processJob();
         // Assert all these variables should be reset after job execution
-        assertFalse(dataCollectionReceiver.fromDispatcherReceived);
-        assertFalse(dataCollectionReceiver.fromCollectorReceived);
-
+        assertEquals(new HashSet<>(), dataCollectionReceiver.invoice.getLocations());
+        assertNull(dataCollectionReceiver.invoice.getInvoiceNumber());
+        assertNull(dataCollectionReceiver.invoice.getInvoiceDate());
     }
 
     @Test

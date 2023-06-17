@@ -25,6 +25,7 @@ import static at.disys.queue.QueueName.*;
  */
 
 public class DataCollectionReceiver {
+    private static DataCollectionReceiver instance;
     private final QueueService dispatcherReceiverQueue = new QueueService(DISPATCHER_RECEIVER_QUEUE.getName());
     private final QueueService collectorReceiverQueue = new QueueService(COLLECTOR_RECEIVER_QUEUE.getName());
     private final QueueService receiverPdfQueue = new QueueService(RECEIVER_PDF_QUEUE.getName());
@@ -32,15 +33,22 @@ public class DataCollectionReceiver {
     boolean fromDispatcherReceived = false;
     boolean fromCollectorReceived = false;
 
+    private DataCollectionReceiver() {
+    }
 
-
-
+    public static DataCollectionReceiver getInstance() {
+        if (instance == null) {
+            instance = new DataCollectionReceiver();
+        }
+        return instance;
+    }
 
     /**
      * Ends the data gathering job
      */
     public static void main(String[] args) {
-        DataCollectionReceiver dataCollectionReceiver = new DataCollectionReceiver();
+        DataCollectionReceiver dataCollectionReceiver = getInstance();
+
         dataCollectionReceiver.receiveDataCollectionJob();
     }
 

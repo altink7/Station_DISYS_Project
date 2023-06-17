@@ -17,14 +17,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static at.disys.station_javafx_app.service.InvoiceGeneratorService.getResponseGETRequest;
-
 /**
  * Controller for the Invoice Generator JavaFX App.
  */
 public class InvoiceGeneratorController {
     private static final String BASE_URL = "http://localhost:8080/api/invoices/";
     private final ObservableList<Invoice> invoices = FXCollections.observableArrayList();
+    private static final InvoiceGeneratorService invoiceGeneratorService = InvoiceGeneratorService.getInstance();
 
     @FXML
     private TextField customerIdField;
@@ -60,7 +59,7 @@ public class InvoiceGeneratorController {
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED) {
                     //wait 10 seconds for the invoice to be generated
                     Thread.sleep(5000);
-                    if(getResponseGETRequest(customerId).responseCode() == HttpURLConnection.HTTP_OK) {
+                    if(invoiceGeneratorService.getResponseGETRequest(customerId).responseCode() == HttpURLConnection.HTTP_OK) {
                         System.out.println("Invoice generated for customer ID: " + customerId);
                     }
                     invoiceTable.getItems().add(new Invoice(customerId, createViewInvoiceButton(customerId)));
@@ -102,7 +101,7 @@ public class InvoiceGeneratorController {
     private static boolean viewInvoice(String customerId, boolean isCheck, TableView<Invoice> invoiceTable) {
         boolean success = true;
         try {
-            InvoiceGeneratorService.Result result = getResponseGETRequest(customerId);
+            InvoiceGeneratorService.Result result= invoiceGeneratorService.getResponseGETRequest(customerId);
             if (result.responseCode() == HttpURLConnection.HTTP_OK) {
                 System.out.println("Invoice available for customer ID: " + customerId);
 

@@ -25,21 +25,28 @@ import static at.disys.queue.QueueName.DISPATCHER_COLLECTOR_QUEUE;
  *</i>
  */
 public class StationDataCollector {
+    private static StationDataCollector instance;
     public static final String QUERY = "SELECT * FROM charge WHERE customer_id = ?";
-
     private final QueueService dispatcherCollectorQueue = new QueueService(DISPATCHER_COLLECTOR_QUEUE.getName());
     private final QueueService collectorReceiverQueue = new QueueService(COLLECTOR_RECEIVER_QUEUE.getName());
     private final DatabaseConnector chargeDb;
 
-    public StationDataCollector(DatabaseConnector chargeDb) {
+    private StationDataCollector(DatabaseConnector chargeDb) {
         this.chargeDb = chargeDb;
+    }
+
+    public static StationDataCollector getInstance() {
+        if (instance == null) {
+            instance = new StationDataCollector(new DatabaseConnector());
+        }
+        return instance;
     }
 
     /**
      * station data collector main method
      */
     public static void main(String[] args) {
-        StationDataCollector stationDataCollector = new StationDataCollector(new DatabaseConnector());
+        StationDataCollector stationDataCollector = getInstance();
         stationDataCollector.gatherDataForSpecificPersonSpecificCharge();
     }
 

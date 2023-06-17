@@ -27,22 +27,29 @@ import static at.disys.queue.QueueName.*;
  * </i>
  */
 public class PDFGenerator {
+    private static PDFGenerator instance;
     public static final String QUERY = "SELECT * FROM customer WHERE id = ?";
     private final QueueService receiverPdfQueue = new QueueService(RECEIVER_PDF_QUEUE.getName());
-    private PdfHelper pdfHelper = new PdfHelper();
+    private final PdfHelper pdfHelper = PdfHelper.getInstance();
     private final double pricePerKwh = 0.25;
 
     private final DatabaseConnector customerDb;
 
-    public PDFGenerator(DatabaseConnector customerDb) {
+    private PDFGenerator(DatabaseConnector customerDb) {
         this.customerDb = customerDb;
+    }
+    public static PDFGenerator getInstance() {
+        if (instance == null) {
+            instance = new PDFGenerator(new DatabaseConnector());
+        }
+        return instance;
     }
 
     /**
      * PDF generator main method
      */
     public static void main(String[] args){
-        PDFGenerator pdfGenerator = new PDFGenerator(new DatabaseConnector());
+        PDFGenerator pdfGenerator = getInstance();
         pdfGenerator.handleAllGatheredData();
     }
 
