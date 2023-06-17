@@ -9,7 +9,7 @@ import java.net.URL;
  * it contains the logic for generating an invoice
  */
 public class InvoiceGeneratorService {
-    private static final String BASE_URL = "http://localhost:8080/api/invoices/";
+    protected static final String BASE_URL = "http://localhost:8080/api/invoices/";
 
     /**
      * Sends a GET request to the server to check if an invoice is available for the given customer ID.
