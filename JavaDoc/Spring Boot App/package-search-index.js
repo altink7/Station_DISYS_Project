@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"at.disys.springbootapp.controller"}];updateSearchResults();

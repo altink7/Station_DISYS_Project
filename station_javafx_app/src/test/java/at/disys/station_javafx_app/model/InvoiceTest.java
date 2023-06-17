@@ -3,8 +3,6 @@ package at.disys.station_javafx_app.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class InvoiceTest {
 
     Invoice invoice = new Invoice("1", null);

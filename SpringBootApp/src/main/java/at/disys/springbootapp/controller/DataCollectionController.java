@@ -10,13 +10,14 @@ import jakarta.servlet.http.HttpServletResponse;
  * This class is responsible for the REST API. <br>
  * There are two API routes: <br>
  *
- *  <li>Description:</li> <br>
- *  <b>/invoices/<customer-id> [POST] </b><br>
- *  <li>Starts data gathering job</li><br>
- *  <b>/invoices/<customer-id> [GET]</b> <br>
+ *<ul>
+ *  <li>Description:</li>
+ *  <li>/invoices/customer-id [POST]</li>
+ *  <li>Starts data gathering job</li>
+ *  <li>/invoices/customer-id [GET]</li>
  *  <li>Returns invoice PDF with download link and creation time</li>
  *  <li>Returns 404 Not Found, if it’s not available</li>
- *
+ *</ul>
  */
 @RequestMapping("/api/invoices")
 @RestController
