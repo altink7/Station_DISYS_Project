@@ -1,5 +1,6 @@
 # Data Station Collector
 
+
 ## About The Project
 
 The Data Station Collector is a project where a distributed system with a REST-based API, a RabbitMQ message queue and a JavaFX UI was implemented.
@@ -19,6 +20,7 @@ It is a docker-compose project that sets up five databases and a queue. One data
 A graph of the system:
 
 ![image](https://github.com/altink7/Station_DISYS_Project/assets/84073745/990028b7-0399-4cd3-a27e-a200808423de)
+
 
 ## The Components
 
@@ -47,6 +49,16 @@ The Data Collection Receiver receives all collected data, sorts the data to the 
 ### PDF Generator
 
 The PDF Generator generates the invoice from data and saves PDF to the file system. The service class PDF Helper is responsible for generating PDF files. It uses the iText library. The component also contains the class Database Connector which is responsible for the connection to the database POSTGRES as well as the model classes Customer, Invoice and Station. In addition the Name and the Service Queue are part of the component.
+
+
+## Entity Relationship Diagram
+
+The following entity relationship diagram shows the tables of the database and how they are related:
+
+![image](https://github.com/altink7/Station_DISYS_Project/assets/84073745/6b2cdaf6-f04d-4fc7-a0d0-d316b115f325)
+
+The table customer contains all relevant customer data and is connected to the charge table via customer_id. The charge table contains the data about kwh and an id for tracking the record. The station table contains the data about the station and is connected to the charge table via station_id. The station table definition is the same for all station databases.
+
 
 ## User Guide
 
@@ -88,3 +100,34 @@ That's it! You can now use the application to generate invoices and view them in
 Please note that this guide assumes basic familiarity with IntelliJ IDEA and Docker. If you encounter any issues or have specific questions about the project, refer to the project documentation or consult the project's support resources.
 
 For more information and the latest updates, visit the [GitHub repository](https://github.com/altink7/Station_DISYS_Project.git).
+
+
+## Lessons Learned
+
+- Active participation during teaching events and completing the exercises helps to understand the basic concept of distributed systems, but is not enough for successfully creating the project.
+- A project as complex and big as this one takes always longer than estimated. Despite time buffers it took longer as estimated. Starting very early helped us to keep the deadline and not having an extremly busy time in the last view days.
+- Considering the Project Grading Scheme from the very beginning helps to focus on most relevant tasks and to not forget any requirement.
+- Cloud-based repositories are cruciual for successful team work. In additon communication tools like Discord are essential.
+- Creating a basic coding concept and structure bevor starting to code in detail helps to reduce complexity and to ensure consistency. Afterwards it helps to split the tasks.
+- For a group of not experienced programmers or even programming beginners the project would be hardly feasible.
+- The support / help and explanations from experienced team members are by far more helpful than any online resource.
+
+
+## Effort
+
+The time needed was not tracked, but we would estimate it took us approximately 20 hours per person, so about 80 hours in total.
+
+
+## Credits
+
+### Developer
+
+The distributed system was coded by the following developers:
+- Altin KELMENDI (WI21B054)
+- Julian HOFFMANN (WI21B050)
+- Sandra GRADWOHL-PREM (WI20B063)
+- Sara SEIEDMIRZAEI (WI21B040)
+
+### Date of creation
+
+The project was completed in June 2023.
